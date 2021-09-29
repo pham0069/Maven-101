@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>mavenTest</artifactId>
+        <groupId>com.diep</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>generateSourcesJson</artifactId>
+
+    <dependencies>
+        <!-- These dependencies are needed by the java classes generated
+        Without them, we will encounter compilation error like below example
+        -->
+        <!--
+        [ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.1:compile (default-compile)
+        on project generateSourcesJson: Compilation failure: Compilation failure:
+        [ERROR] /Users/diep/Dev/Code/Maven-101/generateSourcesJson/target/java-gen/guru/springframework/model/ShippingAddress.java:[12,39] package org.apache.commons.lang.builder does not exist
+        [ERROR] /Users/diep/Dev/Code/Maven-101/generateSourcesJson/target/java-gen/guru/springframework/model/ShippingAddress.java:[6,40] package com.fasterxml.jackson.annotation does not exist
+        ...
+        [ERROR]   location: class guru.springframework.model.ShippingAddress
+        [ERROR]   /Users/diep/Dev/Code/Maven-101/generateSourcesJson/target/java-gen/guru/springframework/model/ShippingAddress.java:[189,20] cannot find symbol
+        [ERROR]   symbol:   class EqualsBuilder
+        -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.8.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.9.7</version>
+        </dependency>
+
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.jsonschema2pojo</groupId>
+                <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+                <version>0.5.1</version>
+                <configuration>
+                    <sourceDirectory>${basedir}/src/main/resources/schema</sourceDirectory>
+                    <targetPackage>guru.springframework.model</targetPackage>
+                    <!-- Whether to use commons-lang 3.x imports instead of commons-lang 2.x imports
+                    when adding equals, hashCode and toString methods. -->
+                    <useCommonsLang3>true</useCommonsLang3>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
