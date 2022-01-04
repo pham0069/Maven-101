@@ -23,6 +23,7 @@
         <module>testJUnit4</module>
         <module>testJUnitMixed</module>
         <module>testJUnit4nSpock</module>
+        <module>springBootTest</module>
     </modules>
 
 </project>
